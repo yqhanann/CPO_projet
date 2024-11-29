@@ -9,18 +9,23 @@ package projet_demineur;
  * @author yohan
  */
 public class Cellule {
-    private boolean presenceBombe;
+    public boolean presenceBombe;
     private boolean devoilee;
-    private int nbBombesAdjacentes;
+    public int nbBombesAdjacentes;
     
-    public Cellule(boolean presenceBombe, boolean devoilee, int nbBombesAdjacentes){
-    this.devoilee = devoilee;
-    this.presenceBombe = presenceBombe;
-    this.nbBombesAdjacentes = nbBombesAdjacentes; 
-            }
+    public Cellule() {
+        this.devoilee = false;
+        this.presenceBombe = false;
+        this.nbBombesAdjacentes = 0;
+    }
     public boolean getPresenceBombe(){
     return presenceBombe;
     }
+    // Dans la classe Cellule
+    public void setPresenceBombe(boolean presenceBombe) {
+    this.presenceBombe = presenceBombe;
+}
+
     public int getNbBombesAdjacentes(){
         return nbBombesAdjacentes;
         
@@ -31,23 +36,30 @@ public class Cellule {
     public void revelerCellule(){
     devoilee = true;
     }
-    public int setNbBombesAdjacentes(){
+    public int setNbBombesAdjacentes(int nbBombesAdj){
     return nbBombesAdjacentes;
     }
     
     @Override
-    public String toString() {
+  public String toString() {
     String chaine_a_retourner;
-    if(devoilee == true){
-    chaine_a_retourner = "?";
-    return chaine_a_retourner;
+
+    if (!devoilee) {
+        // La cellule n'est pas dévoilée
+        chaine_a_retourner = "?";
+    } else if (presenceBombe) {
+        // La cellule est dévoilée et contient une bombe
+        chaine_a_retourner = "B";
+    } else if (nbBombesAdjacentes > 0) {
+        // La cellule est dévoilée, ne contient pas de bombe, et a des bombes adjacentes
+        chaine_a_retourner = String.valueOf(nbBombesAdjacentes);
+    } else {
+        // La cellule est dévoilée, ne contient pas de bombe, et n'a pas de bombes adjacentes
+        chaine_a_retourner = " ";
     }
-    if(devoilee == true && presenceBombe == true){
-    chaine_a_retourner = "B";
+
     return chaine_a_retourner;}
-    if(devoilee == true && presenceBombe == false &&  )
-    chaine_a_retourner = "Object : "+Nom+" "+Attaque;
-    return chaine_a_retourner;
 }
-}
+
+
 
