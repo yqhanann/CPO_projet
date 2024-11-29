@@ -30,7 +30,30 @@ public class GrilleDeJeu {
         initialiserGrille();            // Initialise la grille avec des cellules vides
         placerBombesAleatoirement();    // Place les bombes de façon aléatoire
     }
+    
+    public boolean getPresenceBombe(int i, int j) {
+        // Vérifie si les indices sont valides avant d'accéder à la cellule
+        if (i >= 0 && i < nbLignes && j >= 0 && j < nbColonnes) {
+            return matriceCellules[i][j].getPresenceBombe();
+        }
+        return false; // Si les indices sont hors limites, retourne false
+    }
+     
+    public boolean toutesCellulesRevelees() {
+        // Parcours de toutes les cellules de la grille
+        for (int i = 0; i < nbLignes; i++) {
+            for (int j = 0; j < nbColonnes; j++) {
+                Cellule cellule = matriceCellules[i][j];
 
+                // Si la cellule n'a pas de bombe et n'est pas dévoilée, la partie n'est pas encore gagnée
+                if (!cellule.getPresenceBombe() && !cellule.isDevoilee()) {
+                    return false;
+                }
+            }
+        }
+        // Si toutes les cellules sûres sont dévoilées, la partie est gagnée
+        return true;
+    }
     /**
      * Initialise la grille avec des instances de Cellule dans chaque case.
      */
@@ -45,7 +68,7 @@ public class GrilleDeJeu {
     /**
      * Place les bombes de manière aléatoire dans la grille.
      */
-    private void placerBombesAleatoirement() {
+    public void placerBombesAleatoirement() {
         Random random = new Random();
         int bombesPlacees = 0;
 
@@ -66,7 +89,7 @@ public class GrilleDeJeu {
     /**
      * Calcule et met à jour le nombre de bombes adjacentes pour chaque cellule.
      */
-    private void calculerBombesAdjacentes() {
+    public void calculerBombesAdjacentes() {
         for (int i = 0; i < nbLignes; i++) {
             for (int j = 0; j < nbColonnes; j++) {
                 if (!matriceCellules[i][j].getPresenceBombe()) {
@@ -107,7 +130,40 @@ public class GrilleDeJeu {
 
         return compteur;
     }
+    
+    public void revelerCellule(int ligne, int colonne) {
+        // Vérifie si les coordonnées sont valides
+        if (ligne < 0 || ligne >= nbLignes || colonne < 0 || colonne >= nbColonnes) {
+            return; // Coordonnées hors de la grille
+        }
 
+        Cellule cellule = matriceCellules[ligne][colonne];
+
+        // Si la cellule est déjà dévoilée, on arrête
+        if (cellule.isDevoilee()) {
+            return;
+        }
+
+        // Révéler la cellule
+        cellule.setDevoilee(true);
+
+        // Si c'est une bombe, la partie est perdue
+        if (cellule.getPresenceBombe()) {
+            System.out.println("BOOM! Vous avez perdu.");
+            return;
+        }
+
+        // Si la cellule ne contient pas de bombes adjacentes, on révèle les cases adjacentes
+        if (cellule.getNbBombesAdjacentes() == 0) {
+            for (int i = -1; i <= 1; i++) {
+                for (int j = -1; j <= 1; j++) {
+                    if (!(i == 0 && j == 0)) {  // Éviter de rappeler la cellule elle-même
+                        revelerCellule(ligne + i, colonne + j);
+                    }
+                }
+            }
+        }
+    }
     /**
      * Affiche la grille dans la console.
      */
@@ -119,9 +175,50 @@ public class GrilleDeJeu {
             System.out.println();
         }
     }
+    
+    
 
     // Getter pour accéder à la matrice de cellules (si nécessaire)
     public Cellule[][] getMatriceCellules() {
         return matriceCellules;
     }
+    
+    public int getNbLines(){
+        return nbLignes;
+                }
+    public int getNbColonnes(){
+        return nbColonnes;
+                }
+    public int getNbBombes(){
+        return nbBombes;
+                }
+    
+    @Override
+    public String toString() {
+        StringBuilder grilleRepresentation = new StringBuilder();
+
+        // Ajouter la première ligne pour les indices des colonnes
+        grilleRepresentation.append("   ");
+        for (int j = 0; j < nbColonnes; j++) {
+            grilleRepresentation.append(j).append(" ");
+        }
+        grilleRepresentation.append("\n");
+
+        // Parcours des lignes de la grille
+        for (int i = 0; i < nbLignes; i++) {
+            // Ajouter un indice pour la ligne
+            grilleRepresentation.append(i).append("  ");
+            
+            // Parcours des cellules de la ligne
+            for (int j = 0; j < nbColonnes; j++) {
+                // Ajouter la représentation textuelle de chaque cellule
+                grilleRepresentation.append(matriceCellules[i][j].toString()).append(" ");
+            }
+            grilleRepresentation.append("\n");
+        }
+        
+        return grilleRepresentation.toString();
+    
+    
+}
 }
