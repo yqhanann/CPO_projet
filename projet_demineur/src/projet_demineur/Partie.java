@@ -19,54 +19,57 @@ public class Partie {
     public Partie(int nbLignes, int nbColonnes, int nbBombes, int nbVies) {
         this.grille = new GrilleDeJeu(nbLignes, nbColonnes, nbBombes);
         this.nbVies = nbVies;
-        this.partieTerminee = false;
+        this.partieTerminee = false;    
     }
 
     // Méthode pour initialiser la partie : grille, bombes, vies
     public void initialiserPartie(int nbLignes, int nbColonnes, int nbBombes) {
-        // Initialisation de la grille et placement des bombes
-        grille.placerBombesAleatoirement();
-        grille.calculerBombesAdjacentes();
+    // Initialisation de la grille (sans placement des bombes)
+    this.grille = new GrilleDeJeu(nbLignes, nbColonnes, nbBombes);
 
-        // Réinitialiser l'état de la grille et les vies
-        this.nbVies = 3;  // Par exemple, 3 vies pour commencer
-        this.partieTerminee = false;
-        
-        System.out.println("Nouvelle partie initialisée !");
-        System.out.println(grille); // Affiche la grille initiale masquée
-        // Vous pouvez ajouter d'autres initialisations ici si nécessaire.
-    }
+    // Réinitialiser les vies et l'état de la partie
+    this.nbVies = 3;  // Par exemple, 3 vies pour commencer
+    this.partieTerminee = false;
+
+    System.out.println("Nouvelle partie initialisée !");
+    System.out.println(grille); // Affiche la grille initiale masquée
+}
 
     // Méthode pour effectuer un tour de jeu
    // Gérer un tour de jeu
-    public void tourDeJeu(int ligne, int colonne) {
-        if (partieTerminee) {
-            System.out.println("La partie est déjà terminée !");
+   public void tourDeJeu(int ligne, int colonne) {
+    if (partieTerminee) {
+        System.out.println("La partie est déjà terminée !");
+        return;
+    }
+
+    // Placer les bombes lors du premier clic
+    if (!grille.bombesPlacees()) {
+        grille.placerBombesAleatoirement(ligne, colonne);
+    }
+
+    // Révéler la cellule choisie
+    if (grille.getPresenceBombe(ligne, colonne)) {
+        nbVies--;
+        System.out.println("Boom ! Vous avez déclenché une bombe.");
+        if (nbVies <= 0) {
+            partieTerminee = true;
+            System.out.println("Game Over ! Vous avez perdu.");
             return;
         }
-
-        // Révéler la cellule choisie
-        if (grille.getPresenceBombe(ligne, colonne)) {
-            nbVies--;
-            System.out.println("Boom ! Vous avez déclenché une bombe.");
-            if (nbVies <= 0) {
-                partieTerminee = true;
-                System.out.println("Game Over ! Vous avez perdu.");
-            }
-        } else {
-            grille.revelerCellule(ligne, colonne);
-            System.out.println("Cellule révélée avec succès !");
-        }
-
-        // Vérifier si le joueur a gagné
-        if (grille.toutesCellulesRevelees()) {
-            partieTerminee = true;
-            System.out.println("Félicitations ! Vous avez gagné !");
-        }
-
-        // Afficher l'état de la grille
-        System.out.println(grille);
+    } else {
+        grille.revelerCellule(ligne, colonne);
+        System.out.println("Cellule révélée avec succès !");
     }
+
+    // Vérifier si le joueur a gagné
+    if (grille.toutesCellulesRevelees()) {
+        partieTerminee = true;
+        System.out.println("Félicitations ! Vous avez gagné !");
+    }
+}
+
+
 
 
 
