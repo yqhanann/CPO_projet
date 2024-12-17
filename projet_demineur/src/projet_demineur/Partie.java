@@ -4,6 +4,8 @@
  */
 package projet_demineur;
 
+import java.util.Scanner;
+
 /**
  *
  * @author yohan
@@ -21,7 +23,7 @@ public class Partie {
     }
 
     // Méthode pour initialiser la partie : grille, bombes, vies
-    public void initialiserPartie() {
+    public void initialiserPartie(int nbLignes, int nbColonnes, int nbBombes) {
         // Initialisation de la grille et placement des bombes
         grille.placerBombesAleatoirement();
         grille.calculerBombesAdjacentes();
@@ -29,91 +31,100 @@ public class Partie {
         // Réinitialiser l'état de la grille et les vies
         this.nbVies = 3;  // Par exemple, 3 vies pour commencer
         this.partieTerminee = false;
-
+        
+        System.out.println("Nouvelle partie initialisée !");
+        System.out.println(grille); // Affiche la grille initiale masquée
         // Vous pouvez ajouter d'autres initialisations ici si nécessaire.
     }
 
     // Méthode pour effectuer un tour de jeu
+   // Gérer un tour de jeu
     public void tourDeJeu(int ligne, int colonne) {
-        // Vérifie si la partie est déjà terminée
         if (partieTerminee) {
-            System.out.println("La partie est déjà terminée.");
+            System.out.println("La partie est déjà terminée !");
             return;
         }
 
-        // Révéler la cellule
-        Cellule cellule = grille.getMatriceCellules()[ligne][colonne];
-
-        // Si la cellule contient une bombe
-        if (cellule.getPresenceBombe()) {
-            // Le joueur perd une vie
+        // Révéler la cellule choisie
+        if (grille.getPresenceBombe(ligne, colonne)) {
             nbVies--;
-            System.out.println("Oh non, vous avez déclenché une bombe ! Il vous reste " + nbVies + " vies.");
-            
-            // Vérifier si le joueur a perdu
-            if (nbVies == 0) {
-                System.out.println("Game Over ! Vous avez perdu !");
+            System.out.println("Boom ! Vous avez déclenché une bombe.");
+            if (nbVies <= 0) {
                 partieTerminee = true;
+                System.out.println("Game Over ! Vous avez perdu.");
             }
         } else {
-            // Si la cellule ne contient pas de bombe, on la révèle
-            cellule.revelerCellule();
-
-            // Si la cellule a 0 bombes adjacentes, révéler les cellules adjacentes par propagation
-            if (cellule.getNbBombesAdjacentes() == 0) {
-                // Propagez la révélation des cellules adjacentes (récursivement ou avec une queue)
-                revelerCellulesAdjacentes(ligne, colonne);
-            }
-
-            // Vérifier si la partie est gagnée après chaque tour
-            if (verifierVictoire()) {
-                System.out.println("Félicitations, vous avez gagné !");
-                partieTerminee = true;
-            }
+            grille.revelerCellule(ligne, colonne);
+            System.out.println("Cellule révélée avec succès !");
         }
+
+        // Vérifier si le joueur a gagné
+        if (grille.toutesCellulesRevelees()) {
+            partieTerminee = true;
+            System.out.println("Félicitations ! Vous avez gagné !");
+        }
+
+        // Afficher l'état de la grille
+        System.out.println(grille);
     }
 
-    // Méthode pour révéler les cellules adjacentes (par propagation)
-    private void revelerCellulesAdjacentes(int ligne, int colonne) {
-        for (int i = ligne - 1; i <= ligne + 1; i++) {
-            for (int j = colonne - 1; j <= colonne + 1; j++) {
-                if (i >= 0 && i < grille.getNbLines() && j >= 0 && j < grille.getNbColonnes()) {
-                    Cellule cellule = grille.getMatriceCellules()[i][j];
-                    if (!cellule.isDevoilee()) {
-                        cellule.revelerCellule();
 
-                        // Si la cellule adjacente a 0 bombes, on propage davantage
-                        if (cellule.getNbBombesAdjacentes() == 0) {
-                            revelerCellulesAdjacentes(i, j);
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     // Méthode pour vérifier la victoire : si toutes les cellules sûres sont révélées
     public boolean verifierVictoire() {
         return grille.toutesCellulesRevelees();
     }
 
-    // Méthode pour démarrer la partie
+    // Démarrer une partie
     public void demarrerPartie() {
-        // Initialiser la partie avant de commencer
-        initialiserPartie();
+    // Scanner pour la saisie utilisateur
+    Scanner scanner = new Scanner(System.in);
+    boolean partieTerminee = false;
 
-        // Boucle principale du jeu
-        while (!partieTerminee) {
-            // Demander au joueur de choisir une cellule à révéler
-            // Ici, vous pouvez adapter l'input du joueur (par exemple avec un Scanner)
-            System.out.println("Entrez les coordonnées de la cellule à révéler (ligne, colonne) : ");
-            // Par exemple, simuler un tour avec des coordonnées fixes (remplacer cette partie par un Scanner ou une autre méthode)
-            int ligne = 2; // Remplacez par l'entrée de l'utilisateur
-            int colonne = 2; // Remplacez par l'entrée de l'utilisateur
+    while (!partieTerminee) {
+        // Afficher les options
+        System.out.println("\nOptions :");
+        System.out.println("1. Révéler une cellule (ligne et colonne)");
+        System.out.println("2. Quitter la partie");
 
-            // Effectuer le tour de jeu
-            tourDeJeu(ligne, colonne);
+        System.out.print("Votre choix : ");
+        int choix = scanner.nextInt();
+
+        if (choix == 1) {
+            // Saisie des coordonnées
+            System.out.print("Entrez la ligne (0-" + (grille.getNbLines() - 1) + ") : ");
+            int ligne = scanner.nextInt();
+
+            System.out.print("Entrez la colonne (0-" + (grille.getNbColonnes() - 1) + ") : ");
+            int colonne = scanner.nextInt();
+
+            // Vérification des coordonnées
+            if (ligne >= 0 && ligne < grille.getNbLines() && colonne >= 0 && colonne < grille.getNbColonnes()) {
+                tourDeJeu(ligne, colonne);
+                
+                // Vérifier la victoire
+                if (grille.toutesCellulesRevelees()) {
+                    System.out.println("Félicitations ! Vous avez gagné !");
+                    partieTerminee = true;
+                }
+            } else {
+                System.out.println("Coordonnées invalides. Réessayez !");
+            }
+        } else if (choix == 2) {
+            System.out.println("Vous avez quitté la partie.");
+            partieTerminee = true;
+        } else {
+            System.out.println("Choix invalide. Réessayez !");
         }
     }
+
+    scanner.close();
+}
+public GrilleDeJeu getGrille() {
+    return this.grille;
+}
+public int getNbVies() {
+    return this.nbVies;
+}
 }
 

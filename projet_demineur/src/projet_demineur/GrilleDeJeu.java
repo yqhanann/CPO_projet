@@ -82,7 +82,7 @@ public class GrilleDeJeu {
                 bombesPlacees++;
             }
         }
-
+        
         calculerBombesAdjacentes();  // Met à jour le nombre de bombes adjacentes à chaque cellule
     }
 
@@ -107,7 +107,7 @@ public class GrilleDeJeu {
      * @return Le nombre de bombes adjacentes.
      */
     private int compterBombesAdjacentes(int ligne, int colonne) {
-        int compteur = 0;
+        int nbBombesAdjacentes = 0;
 
         // Vérifie les 8 voisins de la cellule
         for (int i = -1; i <= 1; i++) {
@@ -122,13 +122,13 @@ public class GrilleDeJeu {
 
                     // Vérifie si le voisin contient une bombe
                     if (matriceCellules[voisinLigne][voisinColonne].getPresenceBombe()) {
-                        compteur++;
+                        nbBombesAdjacentes++;
                     }
                 }
             }
         }
 
-        return compteur;
+        return nbBombesAdjacentes;
     }
     
     public void revelerCellule(int ligne, int colonne) {

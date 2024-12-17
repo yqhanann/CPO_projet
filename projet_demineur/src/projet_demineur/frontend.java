@@ -19,47 +19,51 @@ public class frontend extends javax.swing.JFrame {
         customizeUI();
         
     }
- private void customizeUI() {
-        // Set the window title
-        setTitle("Démineur");
 
-        // Set window size and position
-        setSize(800, 600);
-        setLocationRelativeTo(null); // Center the window
-        setResizable(false);         // Disable resizing
+private void customizeUI() {
+    // Configurez la fenêtre
+    setTitle("Démineur");
+    setSize(800, 600);
+    setLocationRelativeTo(null); // Centrer la fenêtre
+    setResizable(false);         // Désactiver le redimensionnement
 
-        // Create a panel to hold custom components
-        JPanel customPanel = new JPanel();
-        customPanel.setLayout(new BoxLayout(customPanel, BoxLayout.Y_AXIS));
+    // Créer un panneau personnalisé
+    JPanel customPanel = new JPanel();
+    customPanel.setLayout(new BoxLayout(customPanel, BoxLayout.Y_AXIS));
 
-        // Add a title label
-        JLabel titleLabel = new JLabel("Bienvenue au Démineur!");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+    // Ajouter un label pour le titre
+    JLabel titleLabel = new JLabel("Bienvenue au Démineur!");
+    titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+    titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Add a "Start" button
-        JButton startButton = new JButton("Commencer");
-        startButton.setFont(new Font("Arial", Font.PLAIN, 18));
-        startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        startButton.addActionListener(e -> startGame());
+    // Ajouter un bouton "Commencer"
+    JButton startButton = new JButton("Commencer");
+    startButton.setFont(new Font("Arial", Font.PLAIN, 18));
+    startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+    startButton.addActionListener(e -> startGame());
 
-        // Add a "Quit" button
-        JButton quitButton = new JButton("Quitter");
-        quitButton.setFont(new Font("Arial", Font.PLAIN, 18));
-        quitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        quitButton.addActionListener(e -> System.exit(0));
+    // Ajouter un bouton "Quitter"
+    JButton quitButton = new JButton("Quitter");
+    quitButton.setFont(new Font("Arial", Font.PLAIN, 18));
+    quitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+    quitButton.addActionListener(e -> System.exit(0));
 
-        // Add spacing and components to the panel
-        customPanel.add(Box.createVerticalStrut(50));
-        customPanel.add(titleLabel);
-        customPanel.add(Box.createVerticalStrut(30));
-        customPanel.add(startButton);
-        customPanel.add(Box.createVerticalStrut(20));
-        customPanel.add(quitButton);
+    // Ajouter des espacements et des composants au panneau
+    customPanel.add(Box.createVerticalStrut(50));
+    customPanel.add(titleLabel);
+    customPanel.add(Box.createVerticalStrut(30));
+    customPanel.add(startButton);
+    customPanel.add(Box.createVerticalStrut(20));
+    customPanel.add(quitButton);
 
-        // Add the custom panel to the frame's content pane
-        getContentPane().add(customPanel);
-    }
+    // Remplacer le panneau existant par le panneau personnalisé
+    getContentPane().removeAll();   // Supprimer tous les composants existants
+    getContentPane().add(customPanel); // Ajouter le panneau personnalisé
+    revalidate(); // Re-valider la disposition
+    repaint(); // Repeindre le contenu
+}
+
+
 
     // Simulate starting the game
     private void startGame() {
@@ -77,21 +81,97 @@ public class frontend extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(255, 204, 204));
+        jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 204, 204), 5, true));
+
+        jPanel2.setBackground(new java.awt.Color(255, 204, 204));
+
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
+        jLabel1.setText("Demineur");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(90, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(87, 87, 87))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(jLabel1)
+                .addContainerGap(46, Short.MAX_VALUE))
+        );
+
+        jButton1.setText("Commencer");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(247, 247, 247)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(270, 270, 270)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(263, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(134, 134, 134)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(303, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+ // Créer un JFrame pour afficher frontend2
+    JFrame fenetreNiveau = new JFrame("Choisir un Niveau");
+    fenetreNiveau.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    fenetreNiveau.setSize(800, 600);
+    fenetreNiveau.setLocationRelativeTo(null); // Centrer la fenêtre
+
+    // Ajouter frontend2 comme contenu de la nouvelle fenêtre
+    fenetreNiveau.setContentPane(new frontend2());
+    fenetreNiveau.setVisible(true);
+
+    // Fermer la fenêtre actuelle
+    this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -114,5 +194,9 @@ public class frontend extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 }
