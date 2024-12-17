@@ -19,51 +19,47 @@ public class frontend extends javax.swing.JFrame {
         customizeUI();
         
     }
+ private void customizeUI() {
+        // Set the window title
+        setTitle("Démineur");
 
-private void customizeUI() {
-    // Configurez la fenêtre
-    setTitle("Démineur");
-    setSize(800, 600);
-    setLocationRelativeTo(null); // Centrer la fenêtre
-    setResizable(false);         // Désactiver le redimensionnement
+        // Set window size and position
+        setSize(800, 600);
+        setLocationRelativeTo(null); // Center the window
+        setResizable(false);         // Disable resizing
 
-    // Créer un panneau personnalisé
-    JPanel customPanel = new JPanel();
-    customPanel.setLayout(new BoxLayout(customPanel, BoxLayout.Y_AXIS));
+        // Create a panel to hold custom components
+        JPanel customPanel = new JPanel();
+        customPanel.setLayout(new BoxLayout(customPanel, BoxLayout.Y_AXIS));
 
-    // Ajouter un label pour le titre
-    JLabel titleLabel = new JLabel("Bienvenue au Démineur!");
-    titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
-    titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // Add a title label
+        JLabel titleLabel = new JLabel("Bienvenue au Démineur!");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-    // Ajouter un bouton "Commencer"
-    JButton startButton = new JButton("Commencer");
-    startButton.setFont(new Font("Arial", Font.PLAIN, 18));
-    startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-    startButton.addActionListener(e -> startGame());
+        // Add a "Start" button
+        JButton startButton = new JButton("Commencer");
+        startButton.setFont(new Font("Arial", Font.PLAIN, 18));
+        startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        startButton.addActionListener(e -> startGame());
 
-    // Ajouter un bouton "Quitter"
-    JButton quitButton = new JButton("Quitter");
-    quitButton.setFont(new Font("Arial", Font.PLAIN, 18));
-    quitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-    quitButton.addActionListener(e -> System.exit(0));
+        // Add a "Quit" button
+        JButton quitButton = new JButton("Quitter");
+        quitButton.setFont(new Font("Arial", Font.PLAIN, 18));
+        quitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        quitButton.addActionListener(e -> System.exit(0));
 
-    // Ajouter des espacements et des composants au panneau
-    customPanel.add(Box.createVerticalStrut(50));
-    customPanel.add(titleLabel);
-    customPanel.add(Box.createVerticalStrut(30));
-    customPanel.add(startButton);
-    customPanel.add(Box.createVerticalStrut(20));
-    customPanel.add(quitButton);
+        // Add spacing and components to the panel
+        customPanel.add(Box.createVerticalStrut(50));
+        customPanel.add(titleLabel);
+        customPanel.add(Box.createVerticalStrut(30));
+        customPanel.add(startButton);
+        customPanel.add(Box.createVerticalStrut(20));
+        customPanel.add(quitButton);
 
-    // Remplacer le panneau existant par le panneau personnalisé
-    getContentPane().removeAll();   // Supprimer tous les composants existants
-    getContentPane().add(customPanel); // Ajouter le panneau personnalisé
-    revalidate(); // Re-valider la disposition
-    repaint(); // Repeindre le contenu
-}
-
-
+        // Add the custom panel to the frame's content pane
+        getContentPane().add(customPanel);
+    }
 
     // Simulate starting the game
     private void startGame() {
