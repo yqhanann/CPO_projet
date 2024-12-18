@@ -7,6 +7,9 @@ public class Cellule {
     private boolean presenceBombe; // La cellule contient une bombe ?
     private boolean devoilee; // La cellule est-elle dévoilée ?
     private int nbBombesAdjacentes; // Nombre de bombes adjacentes à cette cellule
+    private boolean aDrapeau = false;
+
+    
 
     // Constructeur par défaut
     public Cellule() {
@@ -14,7 +17,13 @@ public class Cellule {
         this.presenceBombe = false;
         this.nbBombesAdjacentes = 0;
     }
-    
+    public boolean hasDrapeau() {
+    return aDrapeau;
+}
+
+public void setDrapeau(boolean aDrapeau) {
+    this.aDrapeau = aDrapeau;
+}
     // Getter pour savoir si une cellule contient une bombe
     public boolean getPresenceBombe() {
         return presenceBombe;

@@ -43,7 +43,17 @@ public class DemineurGUI extends JFrame {
 
                 int finalI = i;
                 int finalJ = j;
-                boutonsGrille[i][j].addActionListener(e -> handleClic(finalI, finalJ));
+                boutonsGrille[i][j].addMouseListener(new java.awt.event.MouseAdapter() {
+    @Override
+    public void mousePressed(java.awt.event.MouseEvent e) {
+        if (SwingUtilities.isRightMouseButton(e)) {
+            handleClic(finalI, finalJ, true); // Clic droit
+        } else if (SwingUtilities.isLeftMouseButton(e)) {
+            handleClic(finalI, finalJ, false); // Clic gauche
+        }
+    }
+});
+
 
                 panelGrille.add(boutonsGrille[i][j]);
             }
@@ -51,48 +61,68 @@ public class DemineurGUI extends JFrame {
 
         add(panelGrille);
         setVisible(true);
+        
     }
 
-    private void handleClic(int ligne, int colonne) {
-        // Placer les bombes si elles ne le sont pas encore (premier clic sécurisé)
+   private void handleClic(int ligne, int colonne, boolean clicDroit) {
+    if (clicDroit) {
+        // Poser ou retirer un drapeau
+        partie.getGrille().poserOuRetirerDrapeau(ligne, colonne);
+    } else {
+        // Révéler la cellule
         if (!partie.getGrille().bombesPlacees()) {
             partie.getGrille().placerBombesAleatoirement(ligne, colonne);
         }
-
-        // Révéler la cellule dans la partie
         partie.tourDeJeu(ligne, colonne);
-
-        // Mettre à jour l'interface après le clic
-        mettreAJourGrille();
-
-        // Vérifier les conditions de fin
-        if (partie.getNbVies() <= 0) {
-            JOptionPane.showMessageDialog(this, "Vous avez perdu !", "Fin de Partie", JOptionPane.ERROR_MESSAGE);
-            this.dispose();
-        } else if (partie.verifierVictoire()) {
-            JOptionPane.showMessageDialog(this, "Félicitations, vous avez gagné !", "Victoire", JOptionPane.INFORMATION_MESSAGE);
-            this.dispose();
-        }
     }
 
-    private void mettreAJourGrille() {
-        GrilleDeJeu grille = partie.getGrille();
+    // Mettre à jour l'interface après l'action
+    mettreAJourGrille();
 
-        for (int i = 0; i < lignes; i++) {
-            for (int j = 0; j < colonnes; j++) {
-                JButton bouton = boutonsGrille[i][j];
-                if (grille.getMatriceCellules()[i][j].isDevoilee()) {
-                    bouton.setEnabled(false);
-                    if (grille.getPresenceBombe(i, j)) {
-                        bouton.setText("\uD83D\uDCA3"); // Emoji bombe
-                        bouton.setBackground(Color.RED);
-                    } else {
-                        int bombesAdj = grille.getMatriceCellules()[i][j].getNbBombesAdjacentes();
-                        bouton.setText(bombesAdj > 0 ? String.valueOf(bombesAdj) : "");
-                        bouton.setBackground(Color.WHITE);
-                    }
+    // Vérifier les conditions de fin
+    if (partie.getNbVies() <= 0) {
+        JOptionPane.showMessageDialog(this, "Vous avez perdu !", "Fin de Partie", JOptionPane.ERROR_MESSAGE);
+        this.dispose();
+    } else if (partie.verifierVictoire()) {
+        JOptionPane.showMessageDialog(this, "Félicitations, vous avez gagné !", "Victoire", JOptionPane.INFORMATION_MESSAGE);
+        this.dispose();
+    }
+}
+
+    private void mettreAJourGrille() {
+    GrilleDeJeu grille = partie.getGrille(); // Récupère la grille de jeu
+
+    for (int i = 0; i < lignes; i++) {
+        for (int j = 0; j < colonnes; j++) {
+            JButton bouton = boutonsGrille[i][j]; // Récupère le bouton correspondant à la cellule
+            Cellule cellule = grille.getMatriceCellules()[i][j]; // Récupère la cellule correspondante
+
+            if (cellule.hasDrapeau()) { 
+                // Si la cellule a un drapeau
+                bouton.setText("D"); // Emoji drapeau
+                bouton.setBackground(Color.YELLOW);
+                bouton.setEnabled(true); // Toujours activé pour permettre de retirer le drapeau
+            } else if (cellule.isDevoilee()) { 
+                // Si la cellule est dévoilée
+                bouton.setEnabled(false); // Désactive le bouton
+                if (cellule.getPresenceBombe()) { 
+                    // Si c'est une bombe
+                    bouton.setText("\uD83D\uDCA3"); // Emoji bombe
+                    bouton.setBackground(Color.RED);
+                } else { 
+                    // Si ce n'est pas une bombe
+                    int bombesAdj = cellule.getNbBombesAdjacentes();
+                    bouton.setText(bombesAdj > 0 ? String.valueOf(bombesAdj) : ""); // Affiche le nombre de bombes adjacentes
+                    bouton.setBackground(Color.WHITE);
                 }
+            } else { 
+                // Si la cellule n'a pas été dévoilée et n'a pas de drapeau
+                bouton.setText("");
+                bouton.setBackground(Color.LIGHT_GRAY);
+                bouton.setEnabled(true); // Réactive le bouton si nécessaire
             }
         }
     }
+}
+
 }

@@ -15,7 +15,7 @@ public class GrilleDeJeu {
     private int nbColonnes;               // Nombre de colonnes dans la grille
     private int nbBombes;                 // Nombre total de bombes dans la grille
     private boolean bombesPlacees = false;
-
+    
     /**
      * Constructeur de la classe GrilleDeJeu.
      * @param nbLignes Nombre de lignes de la grille.
@@ -32,6 +32,16 @@ public class GrilleDeJeu {
         
     }
     
+   
+
+public void poserOuRetirerDrapeau(int ligne, int colonne) {
+    if (ligne >= 0 && ligne < nbLignes && colonne >= 0 && colonne < nbColonnes) {
+        Cellule cellule = matriceCellules[ligne][colonne];
+        if (!cellule.isDevoilee()) {
+            cellule.setDrapeau(!cellule.hasDrapeau());
+        }
+    }
+}
     public boolean getPresenceBombe(int i, int j) {
         // Vérifie si les indices sont valides avant d'accéder à la cellule
         if (i >= 0 && i < nbLignes && j >= 0 && j < nbColonnes) {
