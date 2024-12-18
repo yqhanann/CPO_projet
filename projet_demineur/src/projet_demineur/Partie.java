@@ -69,10 +69,6 @@ public class Partie {
     }
 }
 
-
-
-
-
     // Méthode pour vérifier la victoire : si toutes les cellules sûres sont révélées
     public boolean verifierVictoire() {
         return grille.toutesCellulesRevelees();

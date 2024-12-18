@@ -14,7 +14,7 @@ public class DemineurGUI extends JFrame {
         this.nbBombes = nbBombes;
 
         // Initialiser la partie avec les paramètres
-        partie = new Partie(lignes, colonnes, nbBombes, 3); // Exemple : 3 vies pour le joueur
+        partie = new Partie(lignes, colonnes, nbBombes, 1); // Exemple : 3 vies pour le joueur
         setTitle("Démineur - Niveau");
         setSize(800, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

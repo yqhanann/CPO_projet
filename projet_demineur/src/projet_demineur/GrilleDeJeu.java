@@ -39,6 +39,7 @@ public class GrilleDeJeu {
         }
         return false; // Si les indices sont hors limites, retourne false
     }
+    
     public boolean bombesPlacees() {
     return bombesPlacees;
 }
